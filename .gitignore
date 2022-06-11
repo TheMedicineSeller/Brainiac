@@ -1,0 +1,8 @@
+# Tests
+benchmark.cpp
+
+#vscode
+.vscode
+
+# Unfinihsed builds
+build/
