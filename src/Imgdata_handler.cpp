@@ -33,13 +33,11 @@ brainiac::Imgdata_handler::Imgdata_handler (const char* featuresPath, const char
     uint32_t img_size = img_header[2] * img_header[3];
     for (uint32_t i = 0; i < img_header[1]; i ++) {
         Imgdata* img = new Imgdata(img_size);
-        /* Slightly More efficient in load time compared to vector & reserve but is dataset specific
-        uint8_t pixels[784];
-        */
+
         std::vector<uint8_t> pixels;
-        pixels.reserve(img_size);
+        pixels.resize(img_size);
     
-        if (! fread(&pixels[0], 1, sizeof(pixels), features_fhandle)) {
+        if (! fread(&pixels[0], 1, pixels.size(), features_fhandle)) {
             perror("Error reading bytes from features file...\n");
             exit(EXIT_FAILURE);
         }
@@ -49,7 +47,7 @@ brainiac::Imgdata_handler::Imgdata_handler (const char* featuresPath, const char
         this->ImageArray.emplace_back(img);
     }
     fclose(features_fhandle);
-    printf("Successfully read and loaded %d image features...\n", img_header[1]);
+    printf("Successfully read and loaded %d image features...\n", ImageArray.size());
 
     
     uint32_t label_header[2];
@@ -64,19 +62,19 @@ brainiac::Imgdata_handler::Imgdata_handler (const char* featuresPath, const char
         if (fread(l_buffer, sizeof(l_buffer), 1, labels_fhandle))
             label_header[i] = this->to_little_endian(l_buffer);
 
-    /*uint8_t labels[60000];*/
     std::vector<uint8_t> labels;
-    labels.reserve(img_header[1]);
-    if (! fread(&labels[0], 1, sizeof(labels), labels_fhandle)) {
+    labels.resize(label_header[1]);
+
+    if (! fread(&labels[0], 1, labels.size(), labels_fhandle)) {
         perror("Error reading bytes from labels file...\n");
         exit(EXIT_FAILURE);
     }
-    for (int i = 0; i < img_header[1]; i ++) {
+    for (int i = 0; i < label_header[1]; i ++) {
         this->ImageArray[i]->setClassLabel(labels[i]);
     }
 
     fclose(labels_fhandle);
-    printf("Successfully read and loaded %d feature labels...\n", ImageArray.size());
+    printf("Successfully read and loaded %d feature labels...\n", label_header[1]);
 
     this->updateClassCount();
 }
