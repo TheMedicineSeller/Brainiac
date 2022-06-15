@@ -25,6 +25,5 @@ namespace brainiac
             void AppendTraindata(std::vector<Imgdata*> new_training_data);
             uint8_t Predict(Imgdata* testimg, bool euclidean=true);
             double ValidatePerformance(std::vector<Imgdata*> valImages);
-            ~KNN();
     };
 }

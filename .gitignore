@@ -1,5 +1,7 @@
 # Tests
 benchmark.cpp
+debugall.cpp
+debugall.exe
 
 #vscode
 .vscode

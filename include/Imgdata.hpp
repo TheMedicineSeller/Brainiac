@@ -20,6 +20,5 @@ namespace brainiac
             std::vector<double>  getFeatureVectorDouble();
             uint8_t getClassLabel();
             uint32_t getFeatureSize();
-            // int getEnumClassLabel();
     };
 }

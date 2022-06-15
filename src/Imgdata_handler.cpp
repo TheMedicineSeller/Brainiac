@@ -117,8 +117,7 @@ void brainiac::Imgdata_handler::threeway_split_data () {
     uint32_t size = this->ImageArray.size();
     std::vector<uint32_t> indices;
     indices.reserve(size);
-    for (int idx = 0; idx < size; idx ++)
-        indices.emplace_back(idx);
+    std::generate(indices.begin(), indices.end(), [n = 0]() mutable { return n++; });
     
     std::shuffle(indices.begin(), indices.end(), this->entropySource);
 
@@ -128,11 +127,12 @@ void brainiac::Imgdata_handler::threeway_split_data () {
     uint32_t val_size   = size - train_size - test_size;
 
     while (count < train_size)
-        this->TrainArray.push_back(this->ImageArray[count++]);
+        this->TrainArray.push_back(this->ImageArray[indices[count++]]);
     while (count < train_size + test_size)
-        this->TestArray.push_back(this->ImageArray[count++]);
+        this->TestArray.push_back(this->ImageArray[indices[count++]]);
     while (count < train_size + test_size + val_size)
-        this->ValidationArray.push_back(this->ImageArray[count++]);
+        this->ValidationArray.push_back(this->ImageArray[indices[count++]]);
+    
     printf("Successfully split data array of size %d into train, test and validation sets of sizes %d, %d and %d respectively...\n", size, train_size, test_size, val_size);
 }
 

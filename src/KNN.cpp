@@ -42,10 +42,6 @@ void brainiac::KNN::AppendTraindata (std::vector<brainiac::Imgdata*> new_train_d
     this->training_data.insert(this->training_data.end(), new_train_data.begin(), new_train_data.end());
 }
 
-// bool brainiac::KNN::distanceComparator (const std::pair<uint8_t, double> &p1, const std::pair<uint8_t, double> &p2) {
-//     return (p1.second < p2.second);
-// }
-
 uint8_t brainiac::KNN::Predict (brainiac::Imgdata* img, bool euclidean) {
 
     std::vector<std::pair<uint8_t, double>> distanceLabel_pairs;
@@ -89,12 +85,11 @@ uint8_t brainiac::KNN::Predict (brainiac::Imgdata* img, bool euclidean) {
 
 double brainiac::KNN::ValidatePerformance (std::vector<Imgdata*> valimages) {
     int hits = 0;
-    for (auto testimg : valimages)
-        if (testimg->getClassLabel() == this->Predict(testimg))
+    for (int itr = 0; itr < valimages.size(); itr ++) {
+        if (valimages[itr]->getClassLabel() == this->Predict(valimages[itr]))
             hits ++;
+        printf("Current performance of KNN classifier : %lf\n", hits * 100.0 / (itr+1));
+    }
         
     return (hits * 1.0 / valimages.size());
-}
-
-brainiac::KNN::~KNN () {
 }

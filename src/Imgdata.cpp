@@ -25,10 +25,6 @@ uint8_t brainiac::Imgdata::getClassLabel () {
     return this->class_label;
 }
 
-// inline int brainiac::Imgdata::getEnumClassLabel () {
-//     return reinterpret_cast<int> (this->class_label);
-// }
-
 uint32_t brainiac::Imgdata::getFeatureSize () {
     return this->features.size();
 }
