@@ -1,9 +1,11 @@
-// #include "Imgdata_handler.hpp"
-// #include "KNN.hpp"
-// #include "Kmeans.hpp"
-#include "Csvdata_handler.hpp"
 // // #include <chrono>
 // #include <iostream>
+
+#include "Imgdata_handler.hpp"
+// #include "KNN.hpp"
+// #include "Kmeans.hpp"
+// #include "Csvdata_handler.hpp"
+#include "NeuralNet.hpp"
 
 using namespace brainiac;
 
@@ -26,6 +28,7 @@ int main () {
     kmeans_classifier.Train(ImgDataset.getTrainSet());
     kmeans_classifier.ValidatePerformance(ImgDataset.getValSet());*/
 
+    /*--------------------CSV Handling---------------
     Csvdata_handler csvDataset("../data/CSV/Iris.csv");
     csvDataset.three_way_split();
     auto valset = csvDataset.getValidationData();
@@ -34,7 +37,16 @@ int main () {
     {
         printf("%d \n", valset[i]->getClassLabel());
     }
+    */
+
+    /*--------------------Neural Network-------------*/
+
+    Imgdata_handler ImgDataset("../data/MNIST_imgs/train-images.idx3-ubyte", "../data/MNIST_labels/train-labels.idx1-ubyte");
+    ImgDataset.threeway_split_data();
+    nn::TrainingNetwork NN({754, 500, 10});
+    NN.Train(ImgDataset.getValSet(), 10);
     
+    NN.ValidatePerformance(ImgDataset.getTestSet());
     // auto endclock = std::chrono::steady_clock::now();
     // std::cout<<"\n" <<std::chrono::duration_cast<std::chrono::microseconds>(endclock - startclock).count()<< " µs\n";
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Csvdata.hpp"
 #include <fstream>
 #include <string>
